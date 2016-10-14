@@ -30,38 +30,3 @@ io.on('connection', (socket) => {
   
   
 });
-
-func loadChatRooms() {
-    /*
-     *  After starting Node.JS server
-     *  Synchronize Parse and Node.JS server
-     *  Get all open ChatRooms and assign users to it
-    */
-    var chatRoom = Parse.Object.extend("ChatRoom");
-            
-    var query = new Parse.Query(chatRoom);
-        query.equalTo("isOpen", true);
-    
-        query.find({ success: function(results) {
-                   
-            console.log("Successfully retrieved " + results.length + " rooms.");
-                   
-            // Do something with the returned Parse.Object values
-            for (var i = 0; i < results.length; i++) {
-                   
-                var object = results[i];
-                   
-                // Create Room
-                var room = new Room(object.id, object.get('receiverID'), object.get('requesterID'), object.get('messageID'));
-                   
-                roomList.push(room);
-                
-                console.log("Room " + object.id + " was created!");
-            }
-        },
-        error: function(error) {
-                   
-            alert("Error: " + error.code + " " + error.message);
-        }
-    });
-}
